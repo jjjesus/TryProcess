@@ -28,21 +28,28 @@ namespace TryProcess
             //
             // Start the process.
             //
-            using (Process process = Process.Start(start))
+            try
             {
-                //
-                // Read in all the text from the process with the StreamReader.
-                //
-                using (StreamReader reader = process.StandardOutput)
+                using (Process process = Process.Start(start))
                 {
-                    using (StreamReader errorReader = process.StandardError)
+                    //
+                    // Read in all the text from the process with the StreamReader.
+                    //
+                    using (StreamReader reader = process.StandardOutput)
                     {
-                        string result = reader.ReadToEnd();
-                        string errorResult = errorReader.ReadToEnd();
-                        callback(result, errorResult, null);
+                        using (StreamReader errorReader = process.StandardError)
+                        {
+                            string result = reader.ReadToEnd();
+                            string errorResult = errorReader.ReadToEnd();
+                            callback(result, errorResult, null);
+                        }
                     }
                 }
-            }            
+            }
+            catch (Exception e)
+            {
+                callback(null, null, e);
+            }
         }
     }
 }

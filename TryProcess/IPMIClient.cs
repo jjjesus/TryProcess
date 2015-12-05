@@ -21,7 +21,8 @@ namespace TryProcess
                 {
                     if (error != null)
                     {
-                        // Report error here
+                        Console.WriteLine("Error on cmd:" + cmd);
+                        Console.WriteLine(error.Message);
                         return;
                     }
                     Console.WriteLine("RESULTS");
